@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: osama-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: osama-app
+
+  template:
+    metadata:
+      labels:
+        app: osama-app
+    spec:
+      containers:
+        - name: osama-app-container
+          image: us-central1-docker.pkg.dev/osama-project-401213/images/osama-app
+          ports:
+            - containerPort: 80
