@@ -10,7 +10,7 @@ sudo apt install -y docker.io
 sudo systemctl start docker
 sudo systemctl enable docker
 
-gcloud container clusters get-credentials privatecluster --region us-east1 --project osama-project-401213
+# gcloud container clusters get-credentials cluster --region us-east1 --project osama-project-401213
 # git clone https://github.com/Osamagamal1911/final-ITI-project.git
 
 # cd final-ITI-project

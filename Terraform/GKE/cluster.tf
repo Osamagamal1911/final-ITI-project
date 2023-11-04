@@ -9,24 +9,29 @@ resource "google_container_cluster" "cluster"{
 
   deletion_protection = false
 
+ private_cluster_config {
+    enable_private_nodes    = true
+    enable_private_endpoint = false
+    master_ipv4_cidr_block  = "172.16.0.0/28"
+    # first create without this block, then add
+    master_global_access_config {  
+      enabled = true
+    }
+  }
+
+  ip_allocation_policy {
+    
+  }
+
   master_authorized_networks_config {
     cidr_blocks {
-        cidr_block = var.subnets_list[0].ip_cidr_range
-        display_name = var.subnets_list[0].name
+    #display_name = "management-subnet"
+     cidr_block   = "0.0.0.0/0"
     }
   }
-  private_cluster_config {
-    enable_private_nodes = true
-    enable_private_endpoint = true
-    master_ipv4_cidr_block = "172.16.0.0/28"
 
-    master_global_access_config{
-        enabled =  true
-    }
-  }
-   ip_allocation_policy {
-  }
 }
+
 
 resource "google_container_node_pool" "cluster-node-pool" {
   name       = "my-node-pool"
