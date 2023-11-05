@@ -1,0 +1,46 @@
+pipeline {
+    
+    environment {
+        GOOGLE_APPLICATION_CREDENTIALS = credentials('jenkins')
+    }
+    
+    agent any    
+
+    stages {
+        stage('clone code') {
+            steps {
+                sh 'rm -rf ./final-ITI-project'
+                // Clone the GitHub repository
+                git branch: 'main',
+                url: 'https://github.com/Osamagamal1911/final-ITI-project.git'
+            }
+        }
+
+        stage('terraform init') {
+            steps {
+                dir('./Terraform') {
+                    script {
+                        sh 'terraform init'
+                    }
+                }
+            }
+        }
+        stage('terraform apply') {
+            steps {
+                dir('./Terraform') {
+                    script {
+                        echo "Applying Terraform ...."
+                        sh 'terraform apply -auto-approve'
+                    }
+                }
+            }
+        }
+
+    }
+
+    post{
+        success{
+          build propagate: false, job: 'final-project-pipeline2'
+        }
+    }
+}

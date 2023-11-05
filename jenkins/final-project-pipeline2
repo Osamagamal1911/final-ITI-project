@@ -1,0 +1,22 @@
+pipeline {
+    
+    environment {
+        GOOGLE_APPLICATION_CREDENTIALS = credentials('jenkins')
+    }
+    
+    agent any
+
+    stages {
+        stage('Deploy app and service') {
+            steps {
+                sh 'whoami'
+                sh 'rm -rf final-ITI-project'
+                sh 'git clone https://github.com/Osamagamal1911/final-ITI-project.git'
+                sh 'gcloud container clusters get-credentials cluster --region us-east1 --project osama-project-401213'
+                sh 'kubectl apply -f ./final-ITI-project/k8s/osama-deployment.yaml'
+                sh 'kubectl apply -f ./final-ITI-project/k8s/osama-service.yaml'
+                sh 'kubectl get all'
+            }
+        }
+    }
+}
